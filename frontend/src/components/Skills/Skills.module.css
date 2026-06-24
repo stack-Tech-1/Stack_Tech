@@ -1,0 +1,107 @@
+.skills {
+  padding: var(--section-padding);
+  position: relative;
+}
+
+.skills::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(191,90,242,0.3), rgba(0,212,255,0.3), transparent);
+}
+
+.header { margin-bottom: 56px; }
+
+/* ===== Groups ===== */
+.groups {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px;
+  position: relative;
+  background: rgba(6, 6, 24, 0.5);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0,212,255,0.1);
+  border-radius: var(--radius);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+}
+
+/* Circuit trace pattern */
+.group::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
+  background-size: 22px 22px;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.group:hover {
+  border-color: rgba(0,212,255,0.25);
+  box-shadow: 0 0 30px rgba(0,212,255,0.06), inset 0 0 30px rgba(0,212,255,0.02);
+}
+
+.groupLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(0,212,255,0.5);
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Badges ===== */
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 13px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: default;
+  transition: border-color 0.25s, color 0.25s, background 0.25s, box-shadow 0.25s, transform 0.2s;
+  animation: fadeInUp 0.5s ease both;
+}
+
+.badge:hover {
+  border-color: rgba(0, 212, 255, 0.45);
+  color: var(--accent);
+  background: rgba(0, 212, 255, 0.08);
+  box-shadow: 0 0 14px rgba(0,212,255,0.2), 0 0 28px rgba(0,212,255,0.1);
+  transform: translateY(-1px);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .groups { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .groups { grid-template-columns: 1fr; gap: 14px; }
+  .group { padding: 18px; }
+}

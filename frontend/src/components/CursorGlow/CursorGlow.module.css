@@ -1,0 +1,28 @@
+.dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px var(--accent), 0 0 20px rgba(0, 212, 255, 0.5);
+  transition: width 0.15s, height 0.15s, opacity 0.15s;
+}
+
+.ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(0, 212, 255, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.04) 0%, transparent 70%);
+}
+
+@media (hover: none) {
+  .dot, .ring { display: none; }
+}

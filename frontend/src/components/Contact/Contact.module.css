@@ -1,0 +1,180 @@
+.contact {
+  padding: var(--section-padding);
+  position: relative;
+}
+
+.contact::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.3), rgba(191,90,242,0.3), transparent);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* ===== Info column ===== */
+.infoCol > h2 { margin-bottom: 20px; }
+
+.intro {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+
+.emailLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--accent);
+  padding: 12px 20px;
+  background: rgba(0, 212, 255, 0.06);
+  border: 1px solid rgba(0, 212, 255, 0.22);
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+  transition: background 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  word-break: break-all;
+  text-shadow: 0 0 12px rgba(0,212,255,0.3);
+}
+
+.emailLink:hover {
+  background: rgba(0, 212, 255, 0.12);
+  border-color: rgba(0, 212, 255, 0.45);
+  transform: translateY(-2px);
+  box-shadow: 0 0 24px rgba(0,212,255,0.15);
+}
+
+/* ===== Social icons ===== */
+.socials { display: flex; gap: 12px; }
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  transition: color 0.3s, border-color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.socialLink:hover {
+  color: var(--accent);
+  border-color: rgba(0, 212, 255, 0.4);
+  background: rgba(0, 212, 255, 0.07);
+  transform: translateY(-3px);
+  box-shadow: 0 0 16px rgba(0,212,255,0.15);
+}
+
+/* ===== Form ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: rgba(6, 6, 24, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: 0 0 0 1px rgba(0,212,255,0.04), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.input,
+.textarea {
+  background: rgba(6, 6, 24, 0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s, border-left-color 0.3s;
+  resize: none;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--text-dim);
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--accent);
+  border-left-width: 2px;
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.08), 0 0 20px rgba(0,212,255,0.1);
+}
+
+.textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* ===== Submit button ===== */
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg, var(--accent), var(--purple-bright), var(--accent));
+  background-size: 200% 100%;
+  color: #000;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: var(--radius);
+  border: none;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: gradientRide 3s linear infinite;
+  margin-top: 4px;
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0,212,255,0.4), 0 0 50px rgba(191,90,242,0.2), 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.submitBtn:active { transform: translateY(0); }
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; gap: 48px; }
+}
+
+@media (max-width: 560px) {
+  .formRow { grid-template-columns: 1fr; }
+  .form { padding: 20px; }
+}

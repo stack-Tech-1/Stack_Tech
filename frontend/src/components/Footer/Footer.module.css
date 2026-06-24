@@ -1,0 +1,109 @@
+.footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, rgba(0,212,255,0.35), rgba(191,90,242,0.25), transparent) 1;
+  padding: 32px 0;
+  background: rgba(6, 6, 18, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+/* ===== Logo ===== */
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.logo {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  text-shadow: 0 0 16px rgba(0,212,255,0.5);
+  animation: neonPulse 4s ease-in-out infinite;
+  transition: opacity 0.3s;
+}
+
+.logo:hover { opacity: 0.75; }
+
+.logoDash { color: var(--text-dim); margin: 0 3px; }
+
+.tagline {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* ===== Copyright ===== */
+.center { text-align: center; }
+
+.copy {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+/* ===== Social icons ===== */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.socialIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--text-dim);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.02);
+  transition: color 0.3s, border-color 0.3s, background 0.3s, box-shadow 0.3s;
+}
+
+.socialIcon:hover {
+  color: var(--accent);
+  border-color: rgba(0, 212, 255, 0.35);
+  background: rgba(0, 212, 255, 0.06);
+  box-shadow: 0 0 12px rgba(0,212,255,0.15);
+}
+
+.backTop {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--text-dim);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.02);
+  cursor: pointer;
+  transition: color 0.3s, border-color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.backTop:hover {
+  color: var(--accent);
+  border-color: rgba(0, 212, 255, 0.35);
+  background: rgba(0, 212, 255, 0.06);
+  transform: translateY(-3px);
+  box-shadow: 0 0 12px rgba(0,212,255,0.15);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .inner { flex-direction: column; text-align: center; gap: 20px; }
+  .left { align-items: center; }
+}
