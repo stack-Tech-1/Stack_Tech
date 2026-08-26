@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import styles from './Navbar.module.css'
 
 const NAV_LINKS = [
@@ -13,6 +14,9 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
   const menuRef = useRef(null)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const isHome = location.pathname === '/'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -21,6 +25,7 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
+    if (!isHome) return
     const sectionIds = NAV_LINKS.map(l => l.href.slice(1))
     const observers = sectionIds.map(id => {
       const el = document.getElementById(id)
@@ -33,7 +38,7 @@ export default function Navbar() {
       return obs
     })
     return () => observers.forEach(o => o?.disconnect())
-  }, [])
+  }, [isHome])
 
   useEffect(() => {
     if (!menuOpen) return
@@ -46,26 +51,36 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handler)
   }, [menuOpen])
 
-  const handleNavClick = (href) => {
+  const handleNavClick = (e, href) => {
+    e.preventDefault()
     setMenuOpen(false)
-    const el = document.querySelector(href)
-    el?.scrollIntoView({ behavior: 'smooth' })
+    if (isHome) {
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      navigate(`/${href}`)
+    }
   }
 
   return (
     <header className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`} ref={menuRef}>
       <div className={`container ${styles.inner}`}>
-        <a href="#hero" className={styles.logo} onClick={() => handleNavClick('#hero')}>
-          STACK <span className={styles.logoDash}>—</span> TECH
-        </a>
+        {isHome ? (
+          <a href="#hero" className={styles.logo} onClick={(e) => handleNavClick(e, '#hero')}>
+            STACK <span className={styles.logoDash}>—</span> TECH
+          </a>
+        ) : (
+          <Link to="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
+            STACK <span className={styles.logoDash}>—</span> TECH
+          </Link>
+        )}
 
         <nav className={styles.desktopNav}>
           {NAV_LINKS.map(link => (
             <a
               key={link.href}
-              href={link.href}
-              className={`${styles.navLink} ${activeSection === link.href.slice(1) ? styles.active : ''}`}
-              onClick={(e) => { e.preventDefault(); handleNavClick(link.href) }}
+              href={isHome ? link.href : `/${link.href}`}
+              className={`${styles.navLink} ${isHome && activeSection === link.href.slice(1) ? styles.active : ''}`}
+              onClick={(e) => handleNavClick(e, link.href)}
             >
               {link.label}
             </a>
@@ -88,9 +103,9 @@ export default function Navbar() {
         {NAV_LINKS.map(link => (
           <a
             key={link.href}
-            href={link.href}
-            className={`${styles.mobileLink} ${activeSection === link.href.slice(1) ? styles.active : ''}`}
-            onClick={(e) => { e.preventDefault(); handleNavClick(link.href) }}
+            href={isHome ? link.href : `/${link.href}`}
+            className={`${styles.mobileLink} ${isHome && activeSection === link.href.slice(1) ? styles.active : ''}`}
+            onClick={(e) => handleNavClick(e, link.href)}
           >
             {link.label}
           </a>

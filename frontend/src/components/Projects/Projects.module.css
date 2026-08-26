@@ -120,6 +120,7 @@
 .cardBody {
   flex: 1;
   margin-bottom: 24px;
+  display: block;
 }
 
 .cardName {
@@ -152,6 +153,22 @@
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
+  margin-bottom: 16px;
+}
+
+.caseStudyLink {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  transition: text-shadow 0.3s, gap 0.3s;
+  gap: 4px;
+}
+
+.caseStudyLink:hover {
+  text-shadow: 0 0 10px rgba(0,212,255,0.5);
+  gap: 8px;
 }
 
 .tag {

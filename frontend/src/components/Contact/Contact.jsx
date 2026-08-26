@@ -2,11 +2,17 @@ import { useRef, useState } from 'react'
 import { useAnimateOnScroll } from '../../hooks/useAnimateOnScroll'
 import styles from './Contact.module.css'
 
+function encodeFormData(data) {
+  return Object.keys(data)
+    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
+    .join('&')
+}
+
 export default function Contact() {
   const leftRef = useRef(null)
   const rightRef = useRef(null)
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [sent, setSent] = useState(false)
+  const [form, setForm] = useState({ name: '', email: '', message: '', 'bot-field': '' })
+  const [status, setStatus] = useState('idle') // idle | sending | sent | error
 
   useAnimateOnScroll(leftRef)
   useAnimateOnScroll(rightRef, 0.1)
@@ -15,11 +21,26 @@ export default function Contact() {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSent(true)
-    setForm({ name: '', email: '', message: '' })
-    setTimeout(() => setSent(false), 4000)
+
+    if (form['bot-field']) return // honeypot tripped — silently drop
+
+    setStatus('sending')
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encodeFormData({ 'form-name': 'contact', ...form }),
+      })
+      if (!res.ok) throw new Error(`Submission failed: ${res.status}`)
+
+      setStatus('sent')
+      setForm({ name: '', email: '', message: '', 'bot-field': '' })
+      setTimeout(() => setStatus('idle'), 5000)
+    } catch (err) {
+      setStatus('error')
+    }
   }
 
   return (
@@ -63,7 +84,19 @@ export default function Contact() {
           </div>
 
           <div ref={rightRef} className={styles.formCol}>
-            <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            <form
+              className={styles.form}
+              name="contact"
+              onSubmit={handleSubmit}
+              noValidate
+            >
+              <input type="hidden" name="form-name" value="contact" />
+              <p className={styles.honeypot} aria-hidden="true">
+                <label>
+                  Don&apos;t fill this out: <input tabIndex={-1} autoComplete="off" name="bot-field" value={form['bot-field']} onChange={handleChange} />
+                </label>
+              </p>
+
               <div className={styles.formRow}>
                 <div className={styles.field}>
                   <label htmlFor="name" className={styles.label}>Name</label>
@@ -107,14 +140,16 @@ export default function Contact() {
                 />
               </div>
 
-              <button type="submit" className={styles.submitBtn}>
-                {sent ? (
+              <button type="submit" className={styles.submitBtn} disabled={status === 'sending'}>
+                {status === 'sent' ? (
                   <>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                     Message Sent!
                   </>
+                ) : status === 'sending' ? (
+                  'Sending...'
                 ) : (
                   <>
                     Send Message
@@ -124,6 +159,13 @@ export default function Contact() {
                   </>
                 )}
               </button>
+
+              {status === 'error' && (
+                <p className={styles.formError}>
+                  Something went wrong sending that — please email me directly at{' '}
+                  <a href="mailto:stacktechnologies0@gmail.com">stacktechnologies0@gmail.com</a> instead.
+                </p>
+              )}
             </form>
           </div>
         </div>
