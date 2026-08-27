@@ -18,7 +18,7 @@ export default function Projects() {
           <span className="section-label">What I&apos;ve Built</span>
           <h2 className="section-heading">Projects</h2>
           <p className="section-subtext">
-            A selection of things I&apos;ve built — from platforms to automation systems. Click through for the full case study.
+            A selection of things I&apos;ve built; from platforms to automation systems. Click through for the full case study.
           </p>
         </div>
 

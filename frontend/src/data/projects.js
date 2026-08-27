@@ -6,13 +6,13 @@ export const PROJECTS = [
   {
     slug: 'suretalk',
     name: 'SureTalk 2.0',
-    tagline: 'Voice legacy platform — record, schedule, and deliver voice messages that outlast the moment',
+    tagline: 'Voice legacy platform; record, schedule, and deliver voice messages that outlast the moment',
     summary:
-      "A voice-messaging and digital-legacy platform: record voice notes and voice wills, then deliver them by phone, SMS, or email on a schedule — reachable by phone IVR or web dashboard.",
+      "A voice-messaging and digital-legacy platform: record voice notes and voice wills, then deliver them by phone, SMS, or email on a schedule (reachable by phone IVR or web dashboard).",
     tags: ['Next.js', 'Node.js', 'Postgres', 'Twilio', 'Stripe', 'AWS'],
     overview: [
-      '"Your voice, preserved forever." SureTalk lets people record voice notes and voice wills and have them delivered to loved ones — on demand, or scheduled for a future date or life event — by phone call, SMS, or email. It\'s reachable two ways: through a traditional phone-based IVR system, and through a full web dashboard, both backed by the same data.',
-      "The product has gone through a real architectural evolution rather than a rewrite-and-cutover. It started as a fleet of 16+ single-purpose AWS Lambda functions sitting on DynamoDB, built around the phone/IVR flow — one Lambda per operation (save a voice will, check slot availability, verify a user, update login state, and so on). Rather than discarding that fleet, SureTalk 2.0 consolidated the web, billing, and admin surface into one Next.js + Express application on Postgres — and kept the legacy Lambda fleet alive by having it push its writes into the new backend through a bearer-token-protected sync API, with idempotency checks and audit logging on every incoming write.",
+      '"Your voice, preserved forever." SureTalk lets people record voice notes and voice wills and have them delivered to loved ones on demand, or scheduled for a future date or life event by phone call, SMS, or email. It\'s reachable two ways: through a traditional phone-based IVR system, and through a full web dashboard, both backed by the same data.',
+      "The product has gone through a real architectural evolution rather than a rewrite-and-cutover. It started as a fleet of 16+ single-purpose AWS Lambda functions sitting on DynamoDB, built around the phone/IVR flow, one Lambda per operation (save a voice will, check slot availability, verify a user, update login state, and so on). Rather than discarding that fleet, SureTalk 2.0 consolidated the web, billing, and admin surface into one Next.js + Express application on Postgres, and kept the legacy Lambda fleet alive by having it push its writes into the new backend through a bearer-token-protected sync API, with idempotency checks and audit logging on every incoming write.",
     ],
     features: [
       'Voice notes and voice wills with per-tier storage limits, favoriting, and soft-delete, stored across three separate S3 buckets',
@@ -34,9 +34,9 @@ export const PROJECTS = [
     github: null,
     live: null,
     screenshots: [
-      { src: '/images/projects/suretalk/login.png', alt: 'SureTalk login screen' },
-      { src: '/images/projects/suretalk/signup.png', alt: 'SureTalk signup with pricing tiers' },
-      { src: '/images/projects/suretalk/about.png', alt: 'SureTalk about/marketing page' },
+      { src: '/images/projects/suretalk/login.jpg', alt: 'SureTalk login screen' },
+      { src: '/images/projects/suretalk/signup.jpg', alt: 'SureTalk signup with pricing tiers' },
+      { src: '/images/projects/suretalk/about.jpg', alt: 'SureTalk about/marketing page' },
     ],
   },
   {
@@ -69,7 +69,7 @@ export const PROJECTS = [
     ],
     github: null,
     live: null,
-    screenshots: [{ src: '/images/projects/tradingbot/dashboard.png', alt: 'TradingBot Pro dashboard' }],
+    screenshots: [{ src: '/images/projects/tradingbot/dashboard.jpg', alt: 'TradingBot Pro dashboard' }],
   },
   {
     slug: 'dept-exec',
@@ -102,8 +102,8 @@ export const PROJECTS = [
     github: null,
     live: null,
     screenshots: [
-      { src: '/images/projects/dept-exec/login.png', alt: 'IESA Exec Portal login screen' },
-      { src: '/images/projects/dept-exec/welfare.png', alt: 'Welfare ticket submission form' },
+      { src: '/images/projects/dept-exec/login.jpg', alt: 'IESA Exec Portal login screen' },
+      { src: '/images/projects/dept-exec/welfare.jpg', alt: 'Welfare ticket submission form' },
     ],
   },
   {
@@ -137,7 +137,7 @@ export const PROJECTS = [
     github: null,
     live: null,
     screenshots: [
-      { src: '/images/projects/procurement-erp/login.png', alt: 'KUN Real Estate procurement login screen' },
+      { src: '/images/projects/procurement-erp/login.jpg', alt: 'KUN Real Estate procurement login screen' },
     ],
   },
   {
@@ -171,9 +171,9 @@ export const PROJECTS = [
     github: null,
     live: null,
     screenshots: [
-      { src: '/images/projects/elevens-touch/home.png', alt: "Eleven's Touch homepage" },
-      { src: '/images/projects/elevens-touch/shop.png', alt: "Eleven's Touch shop page" },
-      { src: '/images/projects/elevens-touch/about.png', alt: "Eleven's Touch brand story page" },
+      { src: '/images/projects/elevens-touch/home.jpg', alt: "Eleven's Touch homepage" },
+      { src: '/images/projects/elevens-touch/shop.jpg', alt: "Eleven's Touch shop page" },
+      { src: '/images/projects/elevens-touch/about.jpg', alt: "Eleven's Touch brand story page" },
     ],
   },
   {

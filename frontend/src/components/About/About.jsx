@@ -20,13 +20,13 @@ export default function About() {
             <div className={styles.body}>
               <p>
                 I&apos;m a full stack developer with a passion for building products that live at the
-                intersection of clean engineering and real-world impact. I thrive across the entire
-                stack — from architecting scalable backend systems to crafting smooth, responsive
+                intersection of clean engineering and real-world impact. I thrive across entire
+                stacks, from architecting scalable backend systems to crafting smooth, responsive
                 user interfaces.
               </p>
               <p>
                 My work spans web platforms, automation systems, enterprise tools, and cloud-native
-                deployments. I believe that good code isn&apos;t just functional — it&apos;s readable,
+                deployments. I believe that good code isn&apos;t just functional but also readable,
                 maintainable, and built to last. Every project I take on, I bring the same obsession
                 with quality and detail.
               </p>
