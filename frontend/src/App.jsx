@@ -1,26 +1,27 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import ParticleBackground from './components/ParticleBackground/ParticleBackground'
-import CursorGlow from './components/CursorGlow/CursorGlow'
 import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
+import CadCursor from './components/CadCursor/CadCursor'
+import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import Home from './pages/Home/Home'
 import CaseStudy from './pages/CaseStudy/CaseStudy'
-import ScrollToTop from './components/ScrollToTop/ScrollToTop'
+import NotFound from './pages/NotFound/NotFound'
 
 function App() {
   return (
     <BrowserRouter>
-      <ParticleBackground />
-      <Navbar />
+      <a href="#main" className="sr-only">Skip to content</a>
       <ScrollToTop />
-      <main style={{ position: 'relative', zIndex: 1 }}>
+      <Navbar />
+      <main id="main">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/projects/:slug" element={<CaseStudy />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <Footer style={{ position: 'relative', zIndex: 1 }} />
-      <CursorGlow />
+      <Footer />
+      <CadCursor />
     </BrowserRouter>
   )
 }

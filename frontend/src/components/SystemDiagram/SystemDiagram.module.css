@@ -1,0 +1,114 @@
+.figure {
+  border: 1px solid var(--line-strong);
+  background:
+    linear-gradient(var(--grid-minor) 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px) 0 0 / 20px 20px,
+    rgba(6, 20, 42, 0.7);
+}
+
+.scroller {
+  overflow-x: auto;
+  padding: 12px;
+  scrollbar-width: thin;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* ----- Edges ----- */
+.edge { opacity: 0; }
+.figure:global(.is-in) .edge {
+  animation: fadeIn 0.2s ease forwards;
+  animation-delay: calc(0.45s + var(--i) * 0.14s);
+}
+.line,
+.lineBack {
+  fill: none;
+  stroke: var(--chalk);
+  stroke-width: 1.2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.75;
+}
+.lineBack { stroke: var(--amber); opacity: 0.6; }
+.figure:global(.is-in) .line,
+.figure:global(.is-in) .lineBack {
+  animation: draw 1.1s var(--ease) forwards;
+  animation-delay: calc(0.45s + var(--i) * 0.14s);
+}
+
+.edgeLabel {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  fill: var(--muted);
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 4px;
+  opacity: 0;
+}
+.figure:global(.is-in) .edgeLabel {
+  animation: fadeIn 0.5s ease forwards;
+  animation-delay: calc(1.1s + var(--i) * 0.14s);
+}
+
+.packet {
+  fill: var(--red);
+  opacity: 0;
+  filter: drop-shadow(0 0 4px var(--red));
+}
+.figure:global(.is-in) .packet {
+  animation: fadeIn 0.4s ease forwards;
+  animation-delay: 1.8s;
+}
+
+/* ----- Nodes ----- */
+.node rect {
+  fill: #0a1f3d;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+.corner { fill: none; stroke: var(--red); stroke-width: 1.4; }
+.node {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  transition-delay: calc(var(--i) * 0.07s);
+}
+.figure:global(.is-in) .node { opacity: 1; }
+.nodeLabel {
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+.nodeSub {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  fill: var(--muted);
+}
+
+.caption {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.caption span:first-child { color: var(--red); }
+.hint { color: var(--dim); }
+
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes fadeIn { to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .line, .lineBack { stroke-dasharray: none; stroke-dashoffset: 0; }
+  .edge, .edgeLabel, .node { opacity: 1; }
+  .packet { display: none; }
+  .hint { display: none; }
+}

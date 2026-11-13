@@ -1,0 +1,102 @@
+.wrap {
+  position: relative;
+  margin-top: 64px;
+}
+.track {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.rail {
+  position: absolute;
+  top: 9px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background:
+    repeating-linear-gradient(90deg, var(--line-strong) 0 8px, transparent 8px 14px);
+}
+
+.step { position: relative; padding-right: 8px; }
+
+.node {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  border: 1px solid var(--chalk);
+  border-radius: 50%;
+  background: var(--bg);
+}
+.node span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  transform: scale(0);
+  transition: transform 0.5s var(--ease-out) calc(var(--d) + 0.3s);
+}
+.step:global(.is-in) .node span { transform: scale(1); }
+
+.no {
+  display: block;
+  margin-top: 24px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--red);
+}
+.title {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-stretch: 112%;
+  font-size: clamp(26px, 2.8vw, 36px);
+  line-height: 1.05;
+}
+.body {
+  margin-top: 12px;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.out {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  font-size: 14px;
+  color: var(--ink);
+}
+.out span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 2px;
+}
+
+@media (max-width: 900px) {
+  .track { grid-template-columns: 1fr 1fr; row-gap: 48px; }
+  .rail { display: none; }
+}
+@media (max-width: 560px) {
+  .track { grid-template-columns: 1fr; }
+  .wrap { padding-left: 34px; }
+  .rail {
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 9px;
+    right: auto;
+    width: 1px;
+    height: auto;
+    background: repeating-linear-gradient(180deg, var(--line-strong) 0 8px, transparent 8px 14px);
+    transform: none;
+  }
+  .node { position: absolute; left: -34px; top: 0; }
+  .no { margin-top: 0; }
+}
