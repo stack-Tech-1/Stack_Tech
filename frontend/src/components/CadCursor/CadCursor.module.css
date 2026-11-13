@@ -1,0 +1,48 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+:global(html[data-cursor='on']) .layer { opacity: 1; }
+
+.h,
+.v {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+.h {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(207, 224, 255, 0.14) 15%, rgba(207, 224, 255, 0.14) 85%, transparent);
+}
+.v {
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, rgba(207, 224, 255, 0.14) 15%, rgba(207, 224, 255, 0.14) 85%, transparent);
+}
+
+.tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 3px 7px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  white-space: pre;
+  color: var(--muted);
+  background: rgba(6, 20, 42, 0.85);
+  border: 1px solid var(--line);
+  will-change: transform;
+}
+.tag[data-active='true'] {
+  color: #fff;
+  background: var(--red);
+  border-color: var(--red);
+  text-transform: uppercase;
+}

@@ -1,87 +1,126 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+import StackDrawing from './StackDrawing'
+import { PROJECTS, SHIPPED, LAB } from '../../data/projects'
+import { COMPANY } from '../../data/site'
+import { prefersReducedMotion } from '../../hooks/useReveal'
 import styles from './Hero.module.css'
 
-const TAGLINE = 'code, an extension of the mind'
-
-function TypewriterText({ text, delay = 0 }) {
-  const [displayed, setDisplayed] = useState('')
-  const [started, setStarted] = useState(false)
-
-  useEffect(() => {
-    const startTimer = setTimeout(() => setStarted(true), delay)
-    return () => clearTimeout(startTimer)
-  }, [delay])
-
-  useEffect(() => {
-    if (!started) return
-    if (displayed.length >= text.length) return
-    const timer = setTimeout(() => {
-      setDisplayed(text.slice(0, displayed.length + 1))
-    }, 52)
-    return () => clearTimeout(timer)
-  }, [started, displayed, text])
-
-  return (
-    <span className={styles.typewriterText}>
-      {displayed}
-      <span className={styles.cursor} aria-hidden="true">|</span>
-    </span>
-  )
-}
+const pad = (n) => String(n).padStart(2, '0')
 
 export default function Hero() {
+  const heroRef = useRef(null)
+
+  // Explode the stack drawing with pointer position and scroll
+  useEffect(() => {
+    const hero = heroRef.current
+    if (!hero || prefersReducedMotion()) return
+    let pointer = 0.3
+    let raf = 0
+
+    const apply = () => {
+      raf = 0
+      const scroll = Math.min(1, window.scrollY / (hero.offsetHeight * 0.8))
+      const e = 10 + pointer * 26 + scroll * 46
+      hero.style.setProperty('--e', `${e.toFixed(1)}px`)
+    }
+    const queue = () => { if (!raf) raf = requestAnimationFrame(apply) }
+    const onMove = (ev) => {
+      const r = hero.getBoundingClientRect()
+      pointer = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width))
+      queue()
+    }
+
+    hero.addEventListener('pointermove', onMove, { passive: true })
+    window.addEventListener('scroll', queue, { passive: true })
+    apply()
+    return () => {
+      hero.removeEventListener('pointermove', onMove)
+      window.removeEventListener('scroll', queue)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
+
   const scrollTo = (id) => (e) => {
     e.preventDefault()
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const live = PROJECTS.filter((p) => p.status === 'live').length
+  const today = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase()
+
   return (
-    <section id="hero" className={styles.hero}>
-      <div className={styles.glowOrb}    aria-hidden="true" />
-      <div className={styles.glowOrb2}   aria-hidden="true" />
-      <div className={styles.scanBar}    aria-hidden="true" />
-      <div className={styles.gridLines}  aria-hidden="true" />
+    <section id="top" ref={heroRef} className={styles.hero}>
+      <div className={`container ${styles.grid}`}>
+        <div className={styles.copy}>
+          <p className={styles.kicker}>
+            <span className={styles.kDot} />
+            Software studio · {COMPANY.city}
+          </p>
 
-      {/* Corner brackets */}
-      <span className={`${styles.bracket} ${styles.tl}`} aria-hidden="true" />
-      <span className={`${styles.bracket} ${styles.tr}`} aria-hidden="true" />
-      <span className={`${styles.bracket} ${styles.bl}`} aria-hidden="true" />
-      <span className={`${styles.bracket} ${styles.br}`} aria-hidden="true" />
+          <h1 className={styles.title}>
+            <span className={styles.line}><span style={{ '--d': '0.1s' }}>Software,</span></span>
+            <span className={styles.line}><span style={{ '--d': '0.22s' }}><em>engineered.</em></span></span>
+          </h1>
 
-      <div className={`container ${styles.content}`}>
-        <div className={styles.badge}>
-          <span className={styles.badgeDot} />
-          Available for work
+          {/* Dimension line under the headline */}
+          <div className={styles.dim} aria-hidden="true">
+            <span className={styles.dimTick} />
+            <span className={styles.dimLine} />
+            <span className={styles.dimText}>BUILT TO SPEC</span>
+            <span className={styles.dimLine} />
+            <span className={styles.dimTick} />
+          </div>
+
+          <p className={styles.lede}>
+            Stack Technologies designs and builds web platforms, online stores, business systems and AI
+            automation for real businesses. It was founded by Precious Adetipe, an industrial engineer who
+            treats software the way engineers treat machines: drawn up first, built to spec, and commissioned properly.
+          </p>
+
+          <div className={styles.actions}>
+            <a href="#contact" onClick={scrollTo('contact')} className="btn btn--primary">
+              Start a project
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" /></svg>
+            </a>
+            <a href="#work" onClick={scrollTo('work')} className="btn btn--ghost">
+              See the work
+            </a>
+          </div>
         </div>
 
-        <p className={styles.role}>Full Stack Developer</p>
-
-        <h1 className={styles.name}>
-          <span className={styles.nameLine} data-text="STack">STack </span>
-          <span className={`${styles.nameLine} ${styles.nameAccent}`} data-text="TECHNOLOGIES">TECHNOLOGIES</span>
-          {/*<span className={styles.nameLine} data-text="Adetipe"></span>*/}
-        </h1>
-
-        <p className={styles.tagline}>
-          <TypewriterText text={TAGLINE} delay={900} />
-        </p>
-
-        <div className={styles.actions}>
-          <a href="#projects" className={styles.ctaBtn} onClick={scrollTo('projects')}>
-            See My Work
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
-          <a href="#contact" className={styles.secondaryBtn} onClick={scrollTo('contact')}>
-            Get In Touch
-          </a>
+        <div className={styles.art}>
+          <StackDrawing className={styles.drawing} />
         </div>
       </div>
 
-      <div className={styles.scrollHint} aria-hidden="true">
-        <div className={styles.scrollLine} />
-        <span>scroll</span>
+      {/* Title block, like the corner of an engineering drawing */}
+      <div className="container">
+        <dl className={styles.block}>
+          <div className={styles.cell}>
+            <dt>Systems shipped</dt>
+            <dd className={styles.num}>{pad(SHIPPED.length)}</dd>
+          </div>
+          <div className={styles.cell}>
+            <dt>Live right now</dt>
+            <dd className={styles.num}>{pad(live)}</dd>
+          </div>
+          <div className={styles.cell}>
+            <dt>In the lab</dt>
+            <dd className={styles.num}>{pad(LAB.length)}</dd>
+          </div>
+          <div className={styles.cell}>
+            <dt>Client countries</dt>
+            <dd className={styles.num}>02 <small>NG · SA</small></dd>
+          </div>
+          <div className={`${styles.cell} ${styles.meta}`}>
+            <dt>Drawn by</dt>
+            <dd>P. O. Adetipe, Founder</dd>
+            <dt>Status</dt>
+            <dd className={styles.open}><span className={styles.kDot} /> Taking on new projects</dd>
+            <dt>Date</dt>
+            <dd>{today}</dd>
+          </div>
+        </dl>
       </div>
     </section>
   )

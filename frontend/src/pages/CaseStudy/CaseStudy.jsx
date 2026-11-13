@@ -1,168 +1,203 @@
-import { useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { getProjectBySlug, PROJECTS } from '../../data/projects'
+import { getProjectBySlug, PROJECTS, STATUS_LABEL } from '../../data/projects'
+import SystemDiagram from '../../components/SystemDiagram/SystemDiagram'
+import NotFound from '../NotFound/NotFound'
+import { useDocumentTitle } from '../../hooks/useDocumentTitle'
+import { useReveal } from '../../hooks/useReveal'
 import styles from './CaseStudy.module.css'
 
-function GitHubIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  )
-}
+const Arrow = ({ dir = 'right' }) => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={dir === 'left' ? { transform: 'scaleX(-1)' } : undefined}>
+    <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.4" />
+  </svg>
+)
 
-function LiveIcon() {
+function Lightbox({ shot, onClose }) {
+  const ref = useRef(null)
+  if (!shot) return null
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  )
-}
-
-function ArrowLeft() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M19 12H5m0 0l6 6m-6-6l6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
+    <dialog
+      ref={(el) => { ref.current = el; if (el && !el.open) el.showModal() }}
+      className={styles.lightbox}
+      onClose={onClose}
+      onClick={(e) => e.target === ref.current && ref.current.close()}
+    >
+      <img src={shot.src} alt={shot.alt} />
+      <div className={styles.lbBar}>
+        <span>{shot.alt}</span>
+        <button type="button" onClick={() => ref.current?.close()} autoFocus>Close ✕</button>
+      </div>
+    </dialog>
   )
 }
 
 export default function CaseStudy() {
   const { slug } = useParams()
   const project = getProjectBySlug(slug)
+  const ref = useRef(null)
+  const [open, setOpen] = useState(null)
 
-  useEffect(() => {
-    window.scrollTo({ top: 0 })
-  }, [slug])
+  useDocumentTitle(project?.name, project?.summary)
+  useReveal(ref, { threshold: 0.05, deps: [slug] })
 
-  if (!project) {
-    return (
-      <section className={styles.notFound}>
-        <div className="container">
-          <p className="section-label">404</p>
-          <h1 className="section-heading">Project not found</h1>
-          <Link to="/#projects" className={styles.backLink}>
-            <ArrowLeft /> Back to all projects
-          </Link>
-        </div>
-      </section>
-    )
-  }
+  if (!project) return <NotFound />
 
-  const currentIndex = PROJECTS.findIndex((p) => p.slug === slug)
-  const next = PROJECTS[(currentIndex + 1) % PROJECTS.length]
+  const idx = PROJECTS.findIndex((p) => p.slug === slug)
+  const prev = PROJECTS[(idx - 1 + PROJECTS.length) % PROJECTS.length]
+  const next = PROJECTS[(idx + 1) % PROJECTS.length]
+  const [hero, ...rest] = project.screenshots
+  const backHref = project.status === 'in-build' ? '/#lab' : '/#work'
+
+  const sections = [
+    { id: 'overview', title: 'Overview' },
+    { id: 'features', title: 'Key features' },
+    { id: 'architecture', title: 'Architecture' },
+    { id: 'stack', title: 'Tech stack' },
+    project.highlights.length > 0 && { id: 'notes', title: 'Engineering notes' },
+  ].filter(Boolean)
+  const num = (id) => `${sections.findIndex((s) => s.id === id) + 1}.0`
 
   return (
-    <article className={styles.page}>
+    <article ref={ref} key={slug} className={styles.page}>
       <div className="container">
-        <Link to="/#projects" className={styles.backLink}>
-          <ArrowLeft /> Back to all projects
+        <Link to={backHref} className={styles.back}>
+          <Arrow dir="left" /> {project.status === 'in-build' ? 'Back to the Lab' : 'All work'}
         </Link>
 
         <header className={styles.header}>
-          <span className="section-label">Case Study</span>
-          <h1 className={styles.title}>{project.name}</h1>
+          <div className={styles.metaRow}>
+            <span className={styles.no}>DWG {project.no}</span>
+            <span className={`status status--${project.status}`}>{STATUS_LABEL[project.status]}</span>
+            <span className={styles.type}>{project.type}</span>
+          </div>
+          <h1 className={styles.title} style={{ viewTransitionName: `title-${project.slug}` }}>{project.name}</h1>
           <p className={styles.tagline}>{project.tagline}</p>
 
-          <div className={styles.tags}>
-            {project.tags.map((tag) => (
-              <span key={tag} className={styles.tag}>{tag}</span>
-            ))}
-          </div>
+          <dl className={styles.spec}>
+            <div><dt>Client</dt><dd>{project.client || 'Private'}</dd></div>
+            <div><dt>Role</dt><dd>{project.role}</dd></div>
+            <div><dt>Year</dt><dd>{project.year}</dd></div>
+            <div>
+              <dt>Source</dt>
+              <dd>
+                {project.github
+                  ? <a href={project.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+                  : 'Private codebase'}
+              </dd>
+            </div>
+          </dl>
 
           <div className={styles.actions}>
-            {project.github ? (
-              <a href={project.github} className={styles.linkBtn} target="_blank" rel="noopener noreferrer">
-                <GitHubIcon /> Source
-              </a>
-            ) : (
-              <span className={styles.privateBadge}>Private codebase</span>
-            )}
             {project.live && (
-              <a href={project.live} className={`${styles.linkBtn} ${styles.linkBtnPrimary}`} target="_blank" rel="noopener noreferrer">
-                <LiveIcon /> Live demo
+              <a href={project.live} target="_blank" rel="noopener noreferrer" className="btn btn--primary" data-cursor="Visit live site">
+                Visit live site <Arrow />
               </a>
             )}
+            <Link to="/#contact" className="btn btn--ghost">Build something similar</Link>
           </div>
+
+          {project.milestone && (
+            <p className={styles.milestone}>
+              <span>In build · current milestone</span>
+              {project.milestone}
+            </p>
+          )}
         </header>
 
-        <div className={styles.mediaFrame}>
-          {project.screenshots.length > 0 ? (
-            <img src={project.screenshots[0].src} alt={project.screenshots[0].alt} className={styles.mediaImg} />
-          ) : (
-            <div className={styles.mediaPlaceholder} aria-hidden="true">
-              <span className={styles.mediaGlyph}>{'</>'}</span>
-            </div>
-          )}
-        </div>
+        {hero && (
+          <figure className={`${styles.media} reveal`}>
+            <button type="button" className={styles.mediaBtn} onClick={() => setOpen(hero)} data-cursor="Enlarge">
+              <img src={hero.src} alt={hero.alt} />
+            </button>
+            <figcaption><span>VIEW A</span> {hero.alt}</figcaption>
+          </figure>
+        )}
 
-        {project.screenshots.length > 1 && (
+        {rest.length > 0 && (
           <div className={styles.gallery}>
-            {project.screenshots.slice(1).map((shot) => (
-              <img key={shot.src} src={shot.src} alt={shot.alt} className={styles.galleryImg} />
+            {rest.map((s, i) => (
+              <figure key={s.src} className={`${styles.thumb} reveal`} style={{ '--d': `${i * 0.08}s` }}>
+                <button type="button" className={styles.mediaBtn} onClick={() => setOpen(s)} data-cursor="Enlarge">
+                  <img src={s.src} alt={s.alt} loading="lazy" />
+                </button>
+                <figcaption><span>VIEW {String.fromCharCode(66 + i)}</span> {s.alt}</figcaption>
+              </figure>
             ))}
           </div>
         )}
 
         <div className={styles.body}>
-          <section className={styles.section}>
-            <h2 className={styles.sectionHeading}>Overview</h2>
-            {project.overview.map((para, i) => (
-              <p key={i} className={styles.paragraph}>{para}</p>
-            ))}
-          </section>
-
-          <section className={styles.section}>
-            <h2 className={styles.sectionHeading}>Key Features</h2>
-            <ul className={styles.featureList}>
-              {project.features.map((feature) => (
-                <li key={feature} className={styles.featureItem}>
-                  <span className={styles.featureBullet} aria-hidden="true" />
-                  {feature}
-                </li>
+          <aside className={styles.toc} aria-label="On this page">
+            <span>Contents</span>
+            <ol>
+              {sections.map((s) => (
+                <li key={s.id}><a href={`#${s.id}`}><b>{num(s.id)}</b>{s.title}</a></li>
               ))}
-            </ul>
-          </section>
+            </ol>
+          </aside>
 
-          <section className={styles.section}>
-            <h2 className={styles.sectionHeading}>Tech Stack</h2>
-            <div className={styles.stackGrid}>
-              {Object.entries(project.techStack).map(([category, items]) => (
-                <div key={category} className={styles.stackGroup}>
-                  <h3 className={styles.stackCategory}>{category}</h3>
-                  <div className={styles.stackTags}>
-                    {items.map((item) => (
-                      <span key={item} className={styles.tag}>{item}</span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          <div className={styles.content}>
+            <section id="overview" className={`${styles.section} reveal`}>
+              <h2><span>{num('overview')}</span>Overview</h2>
+              {project.overview.map((p, i) => <p key={i} className={styles.p}>{p}</p>)}
+            </section>
 
-          {project.highlights.length > 0 && (
-            <section className={styles.section}>
-              <h2 className={styles.sectionHeading}>Technical Highlights</h2>
-              <div className={styles.highlights}>
-                {project.highlights.map((highlight, i) => (
-                  <div key={i} className={styles.highlightCard}>
-                    <p>{highlight}</p>
+            <section id="features" className={`${styles.section} reveal`}>
+              <h2><span>{num('features')}</span>Key features</h2>
+              <ol className={styles.features}>
+                {project.features.map((f, i) => (
+                  <li key={f}><span>{String(i + 1).padStart(2, '0')}</span>{f}</li>
+                ))}
+              </ol>
+            </section>
+
+            <section id="architecture" className={`${styles.section} reveal`}>
+              <h2><span>{num('architecture')}</span>Architecture</h2>
+              <SystemDiagram diagram={project.diagram} caption={`${project.name}: how the pieces connect`} />
+            </section>
+
+            <section id="stack" className={`${styles.section} reveal`}>
+              <h2><span>{num('stack')}</span>Tech stack</h2>
+              <div className={styles.stack}>
+                {Object.entries(project.techStack).map(([cat, items]) => (
+                  <div key={cat} className={styles.stackRow}>
+                    <h3>{cat}</h3>
+                    <div>{items.map((it) => <span key={it} className="chip">{it}</span>)}</div>
                   </div>
                 ))}
               </div>
             </section>
-          )}
+
+            {project.highlights.length > 0 && (
+              <section id="notes" className={`${styles.section} reveal`}>
+                <h2><span>{num('notes')}</span>Engineering notes</h2>
+                <div className={styles.notes}>
+                  {project.highlights.map((h, i) => (
+                    <blockquote key={i} className={styles.note}>
+                      <span>NOTE {i + 1}</span>
+                      <p>{h}</p>
+                    </blockquote>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
         </div>
 
-        <div className={styles.footerNav}>
-          <Link to="/#projects" className={styles.backLink}>
-            <ArrowLeft /> All projects
+        <nav className={styles.pager} aria-label="More projects">
+          <Link to={`/projects/${prev.slug}`} viewTransition className={styles.pagerLink}>
+            <span><Arrow dir="left" /> Previous · {prev.no}</span>
+            <strong>{prev.name}</strong>
           </Link>
-          <Link to={`/projects/${next.slug}`} className={styles.nextLink}>
-            Next: {next.name} →
+          <Link to={`/projects/${next.slug}`} viewTransition className={`${styles.pagerLink} ${styles.pagerNext}`}>
+            <span>Next · {next.no} <Arrow /></span>
+            <strong>{next.name}</strong>
           </Link>
-        </div>
+        </nav>
       </div>
+
+      <Lightbox shot={open} onClose={() => setOpen(null)} />
     </article>
   )
 }
