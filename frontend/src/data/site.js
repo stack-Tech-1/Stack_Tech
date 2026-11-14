@@ -76,8 +76,8 @@ export const TIMELINE = [
   {
     rev: 'R5',
     when: '2026 — now',
-    title: 'Founder, Amah',
-    body: 'Designed, built and launched a realtime games platform at playamah.app.',
+    title: 'Co-founder, Amah',
+    body: 'Co-founded with Amarachi Samuel. Designed, built and launched the realtime games platform at playamah.app.',
   },
   {
     rev: 'R4',
@@ -114,3 +114,22 @@ export const TOOLKIT = [
   { part: 'Integrations', items: ['Stripe', 'Paystack', 'Twilio', 'Telegram API', 'Webhooks'] },
   { part: 'AI & other', items: ['Claude API', 'Gemini', 'MQL5', 'Godot / GDScript'] },
 ]
+
+// Client testimonials. Quotes are verbatim excerpts (trimmed, never reworded).
+// `name: null` keeps an entry hidden until the person has confirmed how they want to be credited.
+export const TESTIMONIALS = [
+  {
+    id: 'elevens-touch',
+    project: 'elevens-touch',
+    headline: 'It is one thing to have an idea, but having someone who can translate that idea into something functional and accessible makes a real difference.',
+    quote: [
+      'With Elevens Touch, having a website has made things considerably easier for my business and my customers. It has improved our online presence, made it easier for potential customers to find us and provided a more accessible way for people to reach out and make enquiries.',
+    ],
+    name: 'Amarachi Samuel',
+    role: 'CEO',
+    company: "Eleven's Touch",
+    date: '2026-11-14',
+  },
+]
+
+export const VISIBLE_TESTIMONIALS = TESTIMONIALS.filter((t) => t.name || import.meta.env.DEV)

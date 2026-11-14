@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { getProjectBySlug, PROJECTS, STATUS_LABEL } from '../../data/projects'
 import SystemDiagram from '../../components/SystemDiagram/SystemDiagram'
 import NotFound from '../NotFound/NotFound'
+import SignOff from '../../components/SignOff/SignOff'
 import { useDocumentTitle } from '../../hooks/useDocumentTitle'
 import { useReveal } from '../../hooks/useReveal'
 import styles from './CaseStudy.module.css'
@@ -198,6 +199,8 @@ export default function CaseStudy() {
             )}
           </div>
         </div>
+
+        <SignOff project={project.slug} />
 
         <nav className={styles.pager} aria-label="More projects">
           <Link to={`/projects/${prev.slug}`} viewTransition className={styles.pagerLink}>

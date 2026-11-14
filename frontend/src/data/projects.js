@@ -21,15 +21,15 @@ export const PROJECTS = [
     status: 'live',
     year: '2026',
     type: 'Realtime multiplayer web app',
-    role: 'Founder · product, design, engineering',
-    client: 'Own product',
+    role: 'Co-founder · product, design, engineering',
+    client: 'Co-founded with Amarachi Samuel',
     tagline: 'A private game room for couples and close friends, played live from two phones',
     summary:
       'A realtime games app for two (or a friend group): head-to-head games from Whot and Ludo to chess, co-op puzzles, and keepsakes like love notes that unlock on a date you choose.',
     tags: ['Next.js 15', 'TypeScript', 'Supabase', 'Realtime', 'Playwright'],
     overview: [
       'Amah gives two people a shared, private room. Each person plays from their own phone, live: card and board games (Whot, Ludo, draughts, chess, Connect Four), trivia about each other, drawing games, co-op puzzles, and ongoing room features like a daily question, love notes that stay sealed until an unlock date, a memory lane, streaks and badges. A friend room fits up to eight.',
-      'Founded, designed, built and launched end to end by Stack Technologies: product, game design, accounts, realtime infrastructure, notifications and the live site at playamah.app.',
+      'Co-founded by Precious Adetipe and Amarachi Samuel. Stack Technologies designed, built and launched it end to end: product, game design, accounts, realtime infrastructure, notifications and the live site at playamah.app.',
     ],
     features: [
       'Server-authoritative games: clients only send moves; the server validates them with Zod and pure game rules, then commits atomically with a version check so simultaneous moves never get lost',

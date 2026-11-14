@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { SHIPPED, STATUS_LABEL } from '../../data/projects'
 import { useReveal } from '../../hooks/useReveal'
+import SignOff from '../SignOff/SignOff'
 import styles from './Work.module.css'
 
 const FILTERS = [
@@ -107,6 +108,8 @@ export default function Work() {
             </Link>
           ))}
         </div>
+
+        <SignOff />
       </div>
 
       <div ref={previewRef} className={`${styles.preview} ${hovered ? styles.previewOn : ''}`} aria-hidden="true">
