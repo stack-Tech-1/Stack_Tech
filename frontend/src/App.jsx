@@ -6,6 +6,8 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import Home from './pages/Home/Home'
 import CaseStudy from './pages/CaseStudy/CaseStudy'
 import NotFound from './pages/NotFound/NotFound'
+import Notes from './pages/Notes/Notes'
+import Note from './pages/Note/Note'
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/projects/:slug" element={<CaseStudy />} />
+          <Route path="/notes" element={<Notes />} />
+          <Route path="/notes/:slug" element={<Note />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

@@ -314,3 +314,58 @@
   .pagerNext { border-left: 0; border-top: 1px solid var(--line-strong); }
   .actions :global(.btn) { flex: 1; }
 }
+
+/* ----- Field data (real usage numbers) ----- */
+.metrics {
+  margin-top: 48px;
+  border: 1px solid var(--line-strong);
+  background: rgba(62, 224, 160, 0.03);
+}
+.metricsLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+.metricsLabel::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.metricsGrid > div {
+  padding: 18px 20px 20px;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+}
+.metricsGrid > div:last-child { border-right: 0; }
+.metricsGrid dd {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 112%;
+  font-size: clamp(32px, 4.4vw, 52px);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.metricsGrid dt {
+  font-size: 14px;
+  color: var(--ink-2);
+}
+@media (max-width: 700px) {
+  .metricsGrid { grid-template-columns: 1fr 1fr; }
+  .metricsGrid > div:nth-child(2) { border-right: 0; }
+  .metricsGrid > div:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
+}
