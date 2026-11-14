@@ -4,7 +4,7 @@ import styles from './SystemDiagram.module.css'
 
 const W = 168    // node width
 const H = 56     // node height
-const COL = 230  // column pitch
+const COL = 268  // column pitch (gap wide enough for edge labels)
 const ROW = 98   // row pitch
 const PAD = 28
 

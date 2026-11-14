@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import Logo from '../Logo/Logo'
 import { COMPANY } from '../../data/site'
+import { PUBLISHED } from '../../data/notes'
 import { NAV_LINKS } from '../Navbar/Navbar'
 import styles from './Footer.module.css'
 
@@ -27,6 +28,7 @@ export default function Footer() {
                   <Link to={`/#${l.id}`}><span>{l.no}</span>{l.label}</Link>
                 </li>
               ))}
+              {PUBLISHED.length > 0 && <li><Link to="/notes"><span>N</span>Notes</Link></li>}
             </ul>
           </nav>
 

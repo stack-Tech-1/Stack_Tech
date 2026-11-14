@@ -105,6 +105,20 @@ export default function CaseStudy() {
           )}
         </header>
 
+        {project.metrics && (
+          <section className={`${styles.metrics} reveal`} aria-label="Results">
+            <p className={styles.metricsLabel}>{project.metrics.label}</p>
+            <dl className={styles.metricsGrid}>
+              {project.metrics.items.map((m) => (
+                <div key={m.label}>
+                  <dt>{m.label}</dt>
+                  <dd>{m.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )}
+
         {hero && (
           <figure className={`${styles.media} reveal`}>
             <button type="button" className={styles.mediaBtn} onClick={() => setOpen(hero)} data-cursor="Enlarge">

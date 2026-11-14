@@ -49,6 +49,15 @@ export const PROJECTS = [
       'Every game is a pure, deterministic rules module (seeded RNG, validate → apply → view) shared by the server and the test suite. Adding a game means writing its rules and its board, nothing else.',
       'Secrets stay secret at the data layer, not the UI layer: a player’s phone never receives the other player’s hand, answer or target, even if they open the dev tools.',
     ],
+    metrics: {
+      label: 'Field data · first 30 days after launch (Oct–Nov 2026)',
+      items: [
+        { value: '178', label: 'people signed up' },
+        { value: '98', label: 'rooms created' },
+        { value: '699', label: 'games played' },
+        { value: '2,000+', label: 'chat messages sent' },
+      ],
+    },
     github: null,
     live: 'https://playamah.app',
     screenshots: [

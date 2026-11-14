@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Logo from '../Logo/Logo'
+import { PUBLISHED } from '../../data/notes'
 import styles from './Navbar.module.css'
 
 export const NAV_LINKS = [
@@ -107,6 +108,10 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
+          {PUBLISHED.length > 0 && <Link to="/notes" className={`${styles.link} ${pathname.startsWith('/notes') ? styles.active : ''}`}>
+            <span className={styles.no}>N</span>
+            Notes
+          </Link>}
         </nav>
 
         <div className={styles.right}>
@@ -139,6 +144,10 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
+          {PUBLISHED.length > 0 && <Link to="/notes" className={styles.mLink} style={{ '--i': 6 }}>
+            <span className={styles.no}>N</span>
+            Notes
+          </Link>}
           <p className={styles.mFoot}>stacktechnologies0@gmail.com · Ibadan, Nigeria</p>
         </nav>
       </div>
